@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+ 
+<!-- Adding the needed references from the internet-->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+<body>
+
+<div class="container">
+  <br><br>
+  <h2>Heat Pump Savings Calculator </h2>
+
+  <form class="my-form">
+    <b>When was your home built?</b><br>
+    <select id = "year" name="year">
+      <option disabled selected value></option>
+      <option value="before1940">Before 1940</option>
+      <option value="after1940">After 1940</option>
+      <option value="after1980">After 1980</option>
+    </select>
+    <br>
+    <br>
+    <b>How many stories is your building?</b><br>
+    <input id = "story" type="radio" name="story" value="greaterThanSeven"> > 7<br>
+    <input id = "story" type="radio" name="story" value="lessThanSeven"> <= 7<br>
+    <br>
+    <b>What is the square footage of your home (the area to be heated)? </b><br>
+    <input id = "area" type="text" name="area"> Sq. ft.
+    <br>
+    <br>
+    <b>How old is your existing boiler?</b><br>
+    <select id= "yearOld" name="yearOld"> 
+      <option disabled selected value></option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">11</option>
+      <option value="12">12</option>
+      <option value="13">13</option>
+      <option value="14">14</option>
+      <option value="15">15</option>
+      <option value="16">16</option>
+      <option value="17">17</option>
+      <option value="18">18</option>
+      <option value="19">19</option>
+      <option value="20">20</option>
+    </select> year old 
+    <br>
+    <br>
+    <input type="submit" value="Submit" onClick = "calculate();  
+     return false;">
+  </form> 
+
+  <!-- Results display-->
+  
+  <br>
+  <h4 id = "result"></h4>
+  <div id = "operationCost1stBoiler"></div>
+  <br>
+  <div id = "operationCost2ndBoiler"></div>
+  <br>
+  <div id="columnchart_materialGSHP" style="width: 1000px; height: 500px;"></div>
+  <br>
+  <h4 id="totalSavingsGSHP"></h4>
+  <br>
+  <div id="columnchart_materialASHP" style="width: 1000px; height: 500px;"></div>
+  <br>
+  <h4 id="totalSavingsASHP"></h4>
+  <br>
+  <div id="columnchart_materialGHG" style="width: 700px; height: 500px;"></div>
+  <br>
+
+</div>
+
+
+<!-- JavaScript for the calculator -->
+<script type = "text/javascript">
+
+  // Main Function
+  function calculate() {
+    // Get the year value from the user input
+    var year = document.getElementById("year").value;
+    // Get the story value from the user input
+    var story = document.querySelector('input[name = "story"]:checked').value;
+    // Get the area value from the user input
+    var area = document.getElementById("area").value;
+    // Get the age of the boiler from the user input 
+    var boilerAge = parseInt(document.getElementById("yearOld").value);
+
+    var result = 0;
+    if (year == "after1980" && story == "greaterThanSeven") {
+      result = 35.3*area;
+    }
+    if (year == "after1980" && story == "lessThanSeven") {
+      result =41.1*area;
+    }
+    if (year == "after1940" && story == "greaterThanSeven") {
+      console.log("inside after with greater");
+      result = 38.8*area;
+    }
+    if (year == "after1940" && story == "lessThanSeven") {
+      result = 48.4*area;
+    }
+    if (year == "before1940" && story == "greaterThanSeven") {
+      result = 40.2*area;
+    }
+    if (year == "before1940" && story == "lessThanSeven") {
+      result = 50.5*area;
+    }
+
+    document.getElementById("result").innerHTML = "Your estimated BTU requirement is: " + (result * 1000) + " BTUs/Year.";
+
+    var kwh = 0.00029307107017 * (result * 1000);
+    var usTherm = 0.000010002388121395 * (result * 1000);
+
+    var qAnnualGSHP = kwh / 3.3;
+
+    var qAnnualASHP = kwh / 2.9;
+    var qAnnualBoiler1 = usTherm / 0.6;
+
+    // Multiplying with the electricity cost $0.17 
+    var operationCostGSHP = qAnnualGSHP * 0.17;
+
+    var operationCostASHP = qAnnualASHP * 0.17;
+
+    // Multiplying with the natural gas cost $1.5
+    var operationCostBoiler1 = qAnnualBoiler1 * 1.5;
+    document.getElementById("operationCost1stBoiler").innerHTML = "<b>Operation Fuel Cost For 1st Boiler:</b> <br>" + 
+                                                              "Boiler: $" + Math.round(operationCostBoiler1/100)*100 + "<br>" + 
+                                                              "GSHP: $" + Math.round(operationCostGSHP/100)*100 + "<br>" + 
+                                                              "ASHP: $" + Math.round(operationCostASHP/100)*100 + "<br>";
+
+
+    // Calculating savings for Closed loop ground source heat pump 
+    var savings2DArray = [];
+    var i; //years 
+    
+    
+    savings2DArray.push([1, operationCostBoiler1 - operationCostGSHP]);
+       
+    for (i = 1; i < boilerAge; i++) {
+      var temp = savings2DArray[0];
+      var j = i;
+      savings2DArray.push([i+1, temp[1] * Math.pow(1.0404, -j)]);
+    }
+    
+    // After the replacement of the first boiler
+
+    var qAnnualBoiler2 = usTherm / 0.8;
+    var opertionCostBoiler2 = qAnnualBoiler2 * 1.5;
+
+    var opertionCostBoiler2In6Years = opertionCostBoiler2 * Math.pow(1.0404, -5);
+
+    var operationCostGSHPIn6Years = operationCostGSHP * Math.pow(1.0404, -5);
+
+    var operationCostASHPIn6Years = operationCostASHP * Math.pow(1.0404, -5);
+
+    document.getElementById("operationCost2ndBoiler").innerHTML = "<b>Operation Fuel Cost For 2nd Boiler:</b> <br>" + 
+                                                              "Boiler: $" + Math.round(opertionCostBoiler2In6Years/100)*100 + "<br>" + 
+                                                              "GSHP: $" + Math.round(operationCostGSHPIn6Years/100)*100 + "<br>" + 
+                                                              "ASHP: $" + Math.round(operationCostASHPIn6Years/100)*100 + "<br>";
+
+    
+    savings2DArray.push([boilerAge+1, opertionCostBoiler2In6Years - operationCostGSHPIn6Years]);
+                                  
+    for (i = boilerAge+1; i < 20; i++) {
+      var temp = savings2DArray[boilerAge];
+      var j = i;
+      savings2DArray.push([i+1, temp[1] * Math.pow(1.0404, -j)]);
+    }
+
+    var savings = 0;
+    for(var z = 0; z < 20; z++) {
+      var temp = savings2DArray[z];
+      savings = savings + temp[1];
+    }
+
+    document.getElementById("totalSavingsGSHP").innerHTML = "Your Estimated Savings From Closed Loop Ground Source Heat Pump is: $" + Math.round(savings/100)*100;
+
+    // Chart for Air Source heat pump
+
+    var airSourceSavings2DArray = [];
+    var i; //years 
+
+    airSourceSavings2DArray.push([1, operationCostBoiler1 - operationCostASHP]);
+
+    for (i = 1; i < boilerAge; i++) {
+      var temp = airSourceSavings2DArray[0];
+      var j = i;
+      airSourceSavings2DArray.push([i+1, temp[1] * Math.pow(1.0404, -j)]);
+    }
+
+    airSourceSavings2DArray.push([boilerAge+1, opertionCostBoiler2In6Years - operationCostASHPIn6Years]);
+
+    for (i = boilerAge+1; i < 20; i++) {
+      var temp = airSourceSavings2DArray[boilerAge];
+      var j = i;
+      airSourceSavings2DArray.push([i+1, temp[1] * Math.pow(1.0404, -j)]);
+    }
+
+    var savingsAirSource = 0;
+    for(var z = 0; z < 20; z++) {
+      var temp = airSourceSavings2DArray[z];
+      savingsAirSource = savingsAirSource + temp[1];
+    }
+
+    document.getElementById("totalSavingsASHP").innerHTML = "Your Estimated Savings From Ductless Mini-split Air Source Heat Pump is: $" + Math.round(savingsAirSource/100)*100;
+
+
+    // GreenHouseGases Emmisions Calculator :
+
+    var gHGFromBoiler1 = Math.round (qAnnualBoiler1 * 5.340 * boilerAge); // Emmision factor = 5.340 kg CO2E / therm
+    var gHGFromBoiler2 = Math.round (qAnnualBoiler2 * 5.340 * (20-boilerAge));
+    var gHGFromGSHP = Math.round (qAnnualGSHP * 0.293 * 20); // Emmision factor for electricity = 0.293 kg CO2E / kwh
+    var gHGFromASHP = Math.round (qAnnualASHP * 0.293 * 20); 
+
+    var gHGFromBoilers =  gHGFromBoiler1 + gHGFromBoiler2;
+
+    //x-axis heating system
+    //y-axis greenhouse gas emmision
+    var gHGArray = [];
+
+    gHGArray.push(['Boilers', gHGFromBoilers]);
+    gHGArray.push(['gHGFromASHP', gHGFromASHP]);
+    gHGArray.push(['gHGFromGSHP', gHGFromGSHP]);
+
+
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(init);
+    
+
+    function init() {
+      drawChart(savings2DArray);
+      drawChartASHP(airSourceSavings2DArray);
+      drawChartGHG(gHGArray);
+    };
+  };
+
+
+  function drawChart(savings2DArray) {
+      var arr = [];
+      arr = savings2DArray;
+      arr.unshift(['Year', 'Savings']);
+      var data = new google.visualization.arrayToDataTable(arr);
+      
+      var options = {
+        title: 'Your Total Estimated Savings from Closed Loop Ground Source Heat Pump In 20 Years',
+        hAxis: {
+          title: 'Year',
+          viewWindow: {
+            min: 0,
+            max: 21,
+          }
+        },
+        vAxis: {
+          title: 'Savings In Dollars ($)',
+        }
+      };
+
+      var chart = new google.visualization.ColumnChart(
+        document.getElementById('columnchart_materialGSHP'));
+
+      chart.draw(data, options);
+    }
+
+    function drawChartASHP(airSourceSavings2DArray) {
+      var arr = [];
+      arr = airSourceSavings2DArray;
+      arr.unshift(['Year', 'Savings']);
+      var data = new google.visualization.arrayToDataTable(arr);
+      
+      var options = {
+        title: 'Your Total Estimated Savings from Air Source Heat Pump In 20 Years',
+        hAxis: {
+          title: 'Year',
+          viewWindow: {
+            min: 0,
+            max: 21,
+          }
+        },
+        vAxis: {
+          title: 'Savings In Dollars ($)',
+        }
+      };
+
+      var chart = new google.visualization.ColumnChart(
+        document.getElementById('columnchart_materialASHP'));
+
+      chart.draw(data, options);
+    }
+
+    function drawChartGHG(gHGArray) {
+      var arr = [];
+      arr = gHGArray;
+      arr.unshift(['Heating System', 'GHG Emissions']);
+      var data = new google.visualization.arrayToDataTable(arr);
+      
+      var options = {
+        title: 'Total Estimated Green House Gas Emissions of Boilers Compared to Heat Pumps in 20 years',
+        hAxis: {
+          title: 'Heating Systems',
+        },
+        vAxis: {
+          title: 'Green House Gases Emissions (kGCO2E)',
+        }
+      };
+
+      var chart = new google.visualization.ColumnChart(
+        document.getElementById('columnchart_materialGHG'));
+
+      chart.draw(data, options);
+    }
+  
+</script>
+
+
+</body>
+</html>
