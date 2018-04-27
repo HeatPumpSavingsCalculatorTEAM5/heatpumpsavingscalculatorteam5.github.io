@@ -154,11 +154,11 @@
     var qAnnualBoiler2 = usTherm / 0.8;
     var opertionCostBoiler2 = qAnnualBoiler2 * 1.5;
 
-    var opertionCostBoiler2In6Years = opertionCostBoiler2 * Math.pow(1.0404, -5);
+    var opertionCostBoiler2In6Years = opertionCostBoiler2 * Math.pow(1.0404, -boilerAge);
 
-    var operationCostGSHPIn6Years = operationCostGSHP * Math.pow(1.0404, -5);
+    var operationCostGSHPIn6Years = operationCostGSHP * Math.pow(1.0404, -boilerAge);
 
-    var operationCostASHPIn6Years = operationCostASHP * Math.pow(1.0404, -5);
+    var operationCostASHPIn6Years = operationCostASHP * Math.pow(1.0404, -boilerAge);
    
    savings2DArray.push([boilerAge+1, opertionCostBoiler2In6Years - operationCostGSHPIn6Years]);
                                   
