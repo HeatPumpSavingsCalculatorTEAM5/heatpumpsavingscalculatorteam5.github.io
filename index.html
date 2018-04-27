@@ -68,9 +68,6 @@
   
   <br>
   <h4 id = "result"></h4>
-  <div id = "operationCost1stBoiler"></div>
-  <br>
-  <div id = "operationCost2ndBoiler"></div>
   <br>
   <div id="columnchart_materialGSHP" style="width: 1000px; height: 500px;"></div>
   <br>
@@ -138,12 +135,7 @@
 
     // Multiplying with the natural gas cost $1.5
     var operationCostBoiler1 = qAnnualBoiler1 * 1.5;
-    document.getElementById("operationCost1stBoiler").innerHTML = "<b>Operation Fuel Cost For 1st Boiler:</b> <br>" + 
-                                                              "Boiler: $" + Math.round(operationCostBoiler1/100)*100 + "<br>" + 
-                                                              "GSHP: $" + Math.round(operationCostGSHP/100)*100 + "<br>" + 
-                                                              "ASHP: $" + Math.round(operationCostASHP/100)*100 + "<br>";
-
-
+ 
     // Calculating savings for Closed loop ground source heat pump 
     var savings2DArray = [];
     var i; //years 
@@ -167,14 +159,8 @@
     var operationCostGSHPIn6Years = operationCostGSHP * Math.pow(1.0404, -5);
 
     var operationCostASHPIn6Years = operationCostASHP * Math.pow(1.0404, -5);
-
-    document.getElementById("operationCost2ndBoiler").innerHTML = "<b>Operation Fuel Cost For 2nd Boiler:</b> <br>" + 
-                                                              "Boiler: $" + Math.round(opertionCostBoiler2In6Years/100)*100 + "<br>" + 
-                                                              "GSHP: $" + Math.round(operationCostGSHPIn6Years/100)*100 + "<br>" + 
-                                                              "ASHP: $" + Math.round(operationCostASHPIn6Years/100)*100 + "<br>";
-
-    
-    savings2DArray.push([boilerAge+1, opertionCostBoiler2In6Years - operationCostGSHPIn6Years]);
+   
+   savings2DArray.push([boilerAge+1, opertionCostBoiler2In6Years - operationCostGSHPIn6Years]);
                                   
     for (i = boilerAge+1; i < 20; i++) {
       var temp = savings2DArray[boilerAge];
