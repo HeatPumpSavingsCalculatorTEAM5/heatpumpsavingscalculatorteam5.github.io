@@ -118,7 +118,7 @@
       result = 50.5*area;
     }
 
-    document.getElementById("result").innerHTML = "Your estimated BTU requirement is: " + (result * 1000)+ " BTUs/Year.";
+    document.getElementById("result").innerHTML = "Your estimated BTU requirement is: " + (result * 1000).toLocaleString()+ " BTUs/Year.";
 
     var kwh = 0.00029307107017 * (result * 1000);
     var usTherm = 0.000010002388121395 * (result * 1000);
@@ -174,7 +174,7 @@
       savings = savings + temp[1];
     }
 
-    document.getElementById("totalSavingsGSHP").innerHTML = "Your Estimated Savings From Closed Loop Ground Source Heat Pump is: $" + Math.round(savings/100)*100;
+    document.getElementById("totalSavingsGSHP").innerHTML = "Your Estimated Savings From Closed Loop Ground Source Heat Pump is: $" + (Math.round(savings/100)*100).toLocaleString();
 
     // Chart for Air Source heat pump
 
@@ -203,7 +203,7 @@
       savingsAirSource = savingsAirSource + temp[1];
     }
 
-    document.getElementById("totalSavingsASHP").innerHTML = "Your Estimated Savings From Ductless Mini-split Air Source Heat Pump is: $" + Math.round(savingsAirSource/100)*100;
+    document.getElementById("totalSavingsASHP").innerHTML = "Your Estimated Savings From Ductless Mini-split Air Source Heat Pump is: $" + (Math.round(savingsAirSource/100)*100).toLocaleString();
 
 
     // GreenHouseGases Emmisions Calculator :
