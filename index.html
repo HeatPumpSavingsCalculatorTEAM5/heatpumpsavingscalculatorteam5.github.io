@@ -85,7 +85,6 @@
 
 <!-- JavaScript for the calculator -->
 <script type = "text/javascript">
-
   // Main Function
   function calculate() {
     // Get the year value from the user input
@@ -96,7 +95,6 @@
     var area = document.getElementById("area").value;
     // Get the age of the boiler from the user input 
     var boilerAge = parseInt(document.getElementById("yearOld").value);
-
     var result = 0;
     if (year == "after1980" && story == "greaterThanSeven") {
       result = 35.3*area;
@@ -117,22 +115,16 @@
     if (year == "before1940" && story == "lessThanSeven") {
       result = 50.5*area;
     }
-
     document.getElementById("result").innerHTML = "Your estimated BTU requirement is: " + (result * 1000).toLocaleString()+ " BTUs/Year.";
-
+    
     var kwh = 0.00029307107017 * (result * 1000);
     var usTherm = 0.000010002388121395 * (result * 1000);
-
     var qAnnualGSHP = kwh / 3.3;
-
     var qAnnualASHP = kwh / 2.9;
     var qAnnualBoiler1 = usTherm / 0.6;
-
     // Multiplying with the electricity cost $0.17 
     var operationCostGSHP = qAnnualGSHP * 0.17;
-
     var operationCostASHP = qAnnualASHP * 0.17;
-
     // Multiplying with the natural gas cost $1.5
     var operationCostBoiler1 = qAnnualBoiler1 * 1.5;
  
@@ -142,30 +134,28 @@
     
     
     savings2DArray.push([1, operationCostBoiler1 - operationCostGSHP]);
-       
+    
     for (i = 1; i < boilerAge; i++) {
       var temp = savings2DArray[0];
       var j = i;
       savings2DArray.push([i+1, temp[1] * Math.pow(1.0404, -j)]);
+      
     }
     
     // After the replacement of the first boiler
-
     var qAnnualBoiler2 = usTherm / 0.8;
     var opertionCostBoiler2 = qAnnualBoiler2 * 1.5;
-
     var opertionCostBoiler2In6Years = opertionCostBoiler2 * Math.pow(1.0404, -boilerAge);
-
     var operationCostGSHPIn6Years = operationCostGSHP * Math.pow(1.0404, -boilerAge);
-
     var operationCostASHPIn6Years = operationCostASHP * Math.pow(1.0404, -boilerAge);
    
-   savings2DArray.push([boilerAge+1, opertionCostBoiler2In6Years - operationCostGSHPIn6Years]);
-                                  
+    savings2DArray.push([boilerAge+1, opertionCostBoiler2In6Years - operationCostGSHPIn6Years]);
+    
+    var j = 1;
     for (i = boilerAge+1; i < 20; i++) {
       var temp = savings2DArray[boilerAge];
-      var j = i;
       savings2DArray.push([i+1, temp[1] * Math.pow(1.0404, -j)]);
+      j++;
     }
 
     var savings = 0;
@@ -175,26 +165,25 @@
     }
 
     document.getElementById("totalSavingsGSHP").innerHTML = "Your Estimated Savings From Closed Loop Ground Source Heat Pump is: $" + (Math.round(savings/100)*100).toLocaleString();
-
     // Chart for Air Source heat pump
-
     var airSourceSavings2DArray = [];
     var i; //years 
-
+    
     airSourceSavings2DArray.push([1, operationCostBoiler1 - operationCostASHP]);
-
     for (i = 1; i < boilerAge; i++) {
       var temp = airSourceSavings2DArray[0];
       var j = i;
       airSourceSavings2DArray.push([i+1, temp[1] * Math.pow(1.0404, -j)]);
+     
     }
 
     airSourceSavings2DArray.push([boilerAge+1, opertionCostBoiler2In6Years - operationCostASHPIn6Years]);
-
+    
+    var j = 1;
     for (i = boilerAge+1; i < 20; i++) {
       var temp = airSourceSavings2DArray[boilerAge];
-      var j = i;
       airSourceSavings2DArray.push([i+1, temp[1] * Math.pow(1.0404, -j)]);
+      j++;
     }
 
     var savingsAirSource = 0;
@@ -204,38 +193,27 @@
     }
 
     document.getElementById("totalSavingsASHP").innerHTML = "Your Estimated Savings From Ductless Mini-split Air Source Heat Pump is: $" + (Math.round(savingsAirSource/100)*100).toLocaleString();
-
-
     // GreenHouseGases Emmisions Calculator :
-
     var gHGFromBoiler1 = Math.round (qAnnualBoiler1 * 5.340 * boilerAge); // Emmision factor = 5.340 kg CO2E / therm
     var gHGFromBoiler2 = Math.round (qAnnualBoiler2 * 5.340 * (20-boilerAge));
     var gHGFromGSHP = Math.round (qAnnualGSHP * 0.293 * 20); // Emmision factor for electricity = 0.293 kg CO2E / kwh
     var gHGFromASHP = Math.round (qAnnualASHP * 0.293 * 20); 
-
     var gHGFromBoilers =  gHGFromBoiler1 + gHGFromBoiler2;
-
     //x-axis heating system
     //y-axis greenhouse gas emmision
     var gHGArray = [];
-
     gHGArray.push(['Boilers', gHGFromBoilers]);
     gHGArray.push(['gHGFromASHP', gHGFromASHP]);
     gHGArray.push(['gHGFromGSHP', gHGFromGSHP]);
-
-
     google.charts.load('current', {packages: ['corechart', 'bar']});
     google.charts.setOnLoadCallback(init);
     
-
     function init() {
       drawChart(savings2DArray);
       drawChartASHP(airSourceSavings2DArray);
       drawChartGHG(gHGArray);
     };
   };
-
-
   function drawChart(savings2DArray) {
       var arr = [];
       arr = savings2DArray;
@@ -255,13 +233,10 @@
           title: 'Savings In Dollars ($)',
         }
       };
-
       var chart = new google.visualization.ColumnChart(
         document.getElementById('columnchart_materialGSHP'));
-
       chart.draw(data, options);
     }
-
     function drawChartASHP(airSourceSavings2DArray) {
       var arr = [];
       arr = airSourceSavings2DArray;
@@ -281,13 +256,10 @@
           title: 'Savings In Dollars ($)',
         }
       };
-
       var chart = new google.visualization.ColumnChart(
         document.getElementById('columnchart_materialASHP'));
-
       chart.draw(data, options);
     }
-
     function drawChartGHG(gHGArray) {
       var arr = [];
       arr = gHGArray;
@@ -303,10 +275,8 @@
           title: 'Green House Gases Emissions (kGCO2E)',
         }
       };
-
       var chart = new google.visualization.ColumnChart(
         document.getElementById('columnchart_materialGHG'));
-
       chart.draw(data, options);
     }
   
