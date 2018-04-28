@@ -115,7 +115,7 @@
     if (year == "before1940" && story == "lessThanSeven") {
       result = 50.5*area;
     }
-    document.getElementById("result").innerHTML = "Your estimated BTU requirement is: " + (result * 1000).toLocaleString()+ " BTUs/Year.";
+    document.getElementById("result").innerHTML = "Your estimated BTU requirement is: " + (result / 1000).toLocaleString()+ " mmBTUs/Year.";
     
     var kwh = 0.00029307107017 * (result * 1000);
     var usTherm = 0.000010002388121395 * (result * 1000);
