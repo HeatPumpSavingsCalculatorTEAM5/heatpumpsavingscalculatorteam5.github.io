@@ -149,7 +149,7 @@
     var operationCostGSHPIn6Years = operationCostGSHP * Math.pow(1.0404, -(20-boilerAge));
     var operationCostASHPIn6Years = operationCostASHP * Math.pow(1.0404, -(20-boilerAge));
    
-    savings2DArray.push([boilerAge+1, opertionCostBoiler2In6Years - operationCostGSHPIn6Years]);
+    savings2DArray.push([(20-boilerAge)+1, opertionCostBoiler2In6Years - operationCostGSHPIn6Years]);
     
     var j = 1;
     for (i = (20-boilerAge)+1; i < 20; i++) {
