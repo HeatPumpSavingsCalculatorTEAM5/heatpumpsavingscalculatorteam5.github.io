@@ -135,7 +135,7 @@
     
     savings2DArray.push([1, operationCostBoiler1 - operationCostGSHP]);
     
-    for (i = 1; i < boilerAge; i++) {
+    for (i = 1; i < (20-boilerAge); i++) {
       var temp = savings2DArray[0];
       var j = i;
       savings2DArray.push([i+1, temp[1] * Math.pow(1.0404, -j)]);
@@ -145,15 +145,15 @@
     // After the replacement of the first boiler
     var qAnnualBoiler2 = usTherm / 0.8;
     var opertionCostBoiler2 = qAnnualBoiler2 * 1.5;
-    var opertionCostBoiler2In6Years = opertionCostBoiler2 * Math.pow(1.0404, -boilerAge);
-    var operationCostGSHPIn6Years = operationCostGSHP * Math.pow(1.0404, -boilerAge);
-    var operationCostASHPIn6Years = operationCostASHP * Math.pow(1.0404, -boilerAge);
+    var opertionCostBoiler2In6Years = opertionCostBoiler2 * Math.pow(1.0404, -(20-boilerAge));
+    var operationCostGSHPIn6Years = operationCostGSHP * Math.pow(1.0404, -(20-boilerAge));
+    var operationCostASHPIn6Years = operationCostASHP * Math.pow(1.0404, -(20-boilerAge));
    
     savings2DArray.push([boilerAge+1, opertionCostBoiler2In6Years - operationCostGSHPIn6Years]);
     
     var j = 1;
-    for (i = boilerAge+1; i < 20; i++) {
-      var temp = savings2DArray[boilerAge];
+    for (i = (20-boilerAge)+1; i < 20; i++) {
+      var temp = savings2DArray[(20-boilerAge)];
       savings2DArray.push([i+1, temp[1] * Math.pow(1.0404, -j)]);
       j++;
     }
@@ -170,18 +170,18 @@
     var i; //years 
     
     airSourceSavings2DArray.push([1, operationCostBoiler1 - operationCostASHP]);
-    for (i = 1; i < boilerAge; i++) {
+    for (i = 1; i < (20-boilerAge); i++) {
       var temp = airSourceSavings2DArray[0];
       var j = i;
       airSourceSavings2DArray.push([i+1, temp[1] * Math.pow(1.0404, -j)]);
      
     }
 
-    airSourceSavings2DArray.push([boilerAge+1, opertionCostBoiler2In6Years - operationCostASHPIn6Years]);
+    airSourceSavings2DArray.push([(20-boilerAge)+1, opertionCostBoiler2In6Years - operationCostASHPIn6Years]);
     
     var j = 1;
-    for (i = boilerAge+1; i < 20; i++) {
-      var temp = airSourceSavings2DArray[boilerAge];
+    for (i = (20-boilerAge)+1; i < 20; i++) {
+      var temp = airSourceSavings2DArray[(20-boilerAge)];
       airSourceSavings2DArray.push([i+1, temp[1] * Math.pow(1.0404, -j)]);
       j++;
     }
@@ -194,8 +194,8 @@
 
     document.getElementById("totalSavingsASHP").innerHTML = "Your Estimated Savings From Ductless Mini-split Air Source Heat Pump is: $" + (Math.round(savingsAirSource/100)*100).toLocaleString();
     // GreenHouseGases Emmisions Calculator :
-    var gHGFromBoiler1 = Math.round (qAnnualBoiler1 * 5.340 * boilerAge); // Emmision factor = 5.340 kg CO2E / therm
-    var gHGFromBoiler2 = Math.round (qAnnualBoiler2 * 5.340 * (20-boilerAge));
+    var gHGFromBoiler1 = Math.round (qAnnualBoiler1 * 5.340 * (20-boilerAge)); // Emmision factor = 5.340 kg CO2E / therm
+    var gHGFromBoiler2 = Math.round (qAnnualBoiler2 * 5.340 * (20-(20-boilerAge)));
     var gHGFromGSHP = Math.round (qAnnualGSHP * 0.293 * 20); // Emmision factor for electricity = 0.293 kg CO2E / kwh
     var gHGFromASHP = Math.round (qAnnualASHP * 0.293 * 20); 
     var gHGFromBoilers =  gHGFromBoiler1 + gHGFromBoiler2;
