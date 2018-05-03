@@ -21,7 +21,7 @@
     <select id = "year" name="year">
       <option disabled selected value></option>
       <option value="before1940">Before 1940</option>
-      <option value="after1940">After 1940</option>
+      <option value="between1940-1980">After 1940</option>
       <option value="after1980">After 1980</option>
     </select>
     <br>
@@ -102,11 +102,11 @@
     if (year == "after1980" && story == "lessThanSeven") {
       result =41.1*area;
     }
-    if (year == "after1940" && story == "greaterThanSeven") {
+    if (year == "between1940-1980" && story == "greaterThanSeven") {
       console.log("inside after with greater");
       result = 38.8*area;
     }
-    if (year == "after1940" && story == "lessThanSeven") {
+    if (year == "between1940-1980" && story == "lessThanSeven") {
       result = 48.4*area;
     }
     if (year == "before1940" && story == "greaterThanSeven") {
